@@ -18,7 +18,7 @@ function getViceHeadlines() {
   const proms = _.map([1,2,3,4], (i) => {
     return fetch(`https://www.vice.com/api/v1/articles?per_page=25&locale=en_us${i === 1 ? '' : `&page=${i}`}`)
       .then(r => r.json())
-      .then(headlines => _.join(_.map(headlines, (h) => h.title), '. '));
+      .then(headlines => _.join(_.map(_.filter(headlines, (he) => he.title.indexOf("Today's Comic by") === -1), (h) => h.title), '. '));
   });
 
   return Promise.all(proms).then(p => _.join(p, '. '));
